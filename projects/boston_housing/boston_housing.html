@@ -340,21 +340,14 @@ Standard deviation of prices: $165,171.13
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> 
-Increase in the value of RM means there is more living space so should therefore increase the house value.  So increase the value of RM should increase the value of MEDV.</p>
-<p>Increase in the value of LSTAT means there is more "lower class" in the neighborhood, indicating more neighbors can not afford higer price of house. Therefore increase in the value of LSTAT should decrease the value of MEDV.</p>
-<p>Incease in the value of PTRATIO means a teacher should teach more students, suggesting the teaching quality would reduce. As the school is also one of the key impactor for the house price. I reason that increase in the value of PTRATIO should decrease the value of MEDV.</p>
-<p>To further justify my intuition, a scatter plot and correlation between each feature/ourcome was performed (see below table and figure). From the correlation analysis, we can clearly see that RM has positive correlation with MEDV, while LSTAT and PTRATIO have negative correlation with MEDV.</p>
+</div>**Answer: ** 
+Increase in the value of RM means there is more living space so should therefore increase the house value.  So increase the value of RM should increase the value of MEDV. 
 
-</div>
-</div>
-</div>
+Increase in the value of LSTAT means there is more "lower class" in the neighborhood, indicating more neighbors can not afford higer price of house. Therefore increase in the value of LSTAT should decrease the value of MEDV.
+
+Incease in the value of PTRATIO means a teacher should teach more students, suggesting the teaching quality would reduce. As the school is also one of the key impactor for the house price. I reason that increase in the value of PTRATIO should decrease the value of MEDV.
+
+To further justify my intuition, a scatter plot and correlation analysis between each feature/ourcome were performed (see below table and figure). From the correlation analysis, we can clearly see that RM has positive correlation with MEDV, while LSTAT and PTRATIO have negative correlation with MEDV.
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[123]:</div>
@@ -1884,7 +1877,7 @@ For least square analysis R^2 (R squared) varies between 0 and 1, with larger va
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong></p>
-<p>By randomly splitting your data into training and testing data, one can use the training dataset to train the model. Once the best model was found, we need to test or evaluate how well you model works in similar dataset which the test dataset can server for this purpose. In short, by spliting the data so one will have training data to train the model and have the testing data to
+<p>By randomly splitting your data into training and testing data, one can use the training dataset to train the model. Once the best model was found, we need to test or evaluate how well you model works in similar dataset which the test dataset can server for this purpose. for example, the testing data can estimate of performance on new dataset and can also check if the model is overfitting. In short, by spliting the data so one will have training data to train the model and have the testing data to
 evaluate the model.</p>
 
 </div>
