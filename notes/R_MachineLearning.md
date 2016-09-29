@@ -700,7 +700,7 @@ confusionMatrix(testing$diagnosis,testPred)
 + Deviance/information gain:
   0 -- perfect purity ; 1 -- no purity
 
-![](C:\CourseNote\machineLearning2.PNG)
+![](machineLearning2.PNG)
 
 **Example: Iris data**
 ```
