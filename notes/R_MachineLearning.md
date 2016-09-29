@@ -1,3 +1,5 @@
+##Note from Coursera Practical Machine Learning - JHU
+
 ##Week 1
 SPAM Example
 ```
