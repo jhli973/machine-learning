@@ -39,8 +39,12 @@ class LearningAgent(Agent):
         # Update epsilon using a decay function of your choice
         # Update additional class parameters as needed
         # If 'testing' is True, set epsilon and alpha to 0
+        if testing == True:
+            self.epsilon = 0.0
+            self.alpha = 0.0
+        else:
+            self.epsilon -= 0.05
 
-        return None
 
     def build_state(self):
         """ The build_state function is called when the agent requests data from the 
@@ -55,12 +59,8 @@ class LearningAgent(Agent):
         ########### 
         ## TO DO ##
         ###########
-        # Set 'state' as a tuple of relevant data for the agent
-        # When learning, check if the state is in the Q-table
-        #   If it is not, create a dictionary in the Q-table for the current 'state'
-        #   For each action, set the Q-value for the state-action pair to 0
-        
-        state = None
+        # Set 'state' as a tuple of relevant data for the agent        
+        state = (waypoint,inputs['light'],inputs['left'],inputs['oncoming'])
 
         return state
 
@@ -73,9 +73,11 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Calculate the maximum Q-value of all actions for a given state
-
-        maxQ = None
-
+        maxQ = 0
+        for state in self.Q:
+            for action in self.valid_actions:
+                if self.Q[state][action] > maxQ:
+                    maxQ = self.Q[state][action]
         return maxQ 
 
 
@@ -88,9 +90,11 @@ class LearningAgent(Agent):
         # When learning, check if the 'state' is not in the Q-table
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
-
-        return
-
+        if self.learning and state not in self.Q:
+            self.Q[state] = {}
+            for action in self.valid_actions:
+                self.Q[state][action] = 0.0
+        return self.Q    
 
     def choose_action(self, state):
         """ The choose_action function is called when the agent is asked to choose
@@ -107,13 +111,17 @@ class LearningAgent(Agent):
         # When not learning, choose a random action
         # When learning, choose a random action with 'epsilon' probability
         #   Otherwise, choose an action with the highest Q-value for the current state
-		if self.learning is None:
-			action = random.choice(None, 'Right', 'Forward')
-		elif self.learning == learning:
-			action = random.choose(None, 'Right', 'Forward') +
-		else:
-			action = self.get_maxQ(state)
-        return action
+        if self.learning==False:                                      # J.H.
+            action = random.choice(self.valid_actions)             # J.H.
+        else:                                                      # J.H.
+            if epsilon > random.random():                          # J.H.  
+                action = random.choose(self.valid_actions)         # J.H.
+            else:                                                  # J.H. 
+                for action in self.valid_actions:
+                    if self.Q[state][action] == self.get_maxQ(state):
+                        action = action                            # J.H.
+        
+        return action       
 
 
     def learn(self, state, action, reward):
@@ -126,10 +134,10 @@ class LearningAgent(Agent):
         ###########
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
-
-        return
-
-
+        if self.learning:
+            currentQ = self.Q[state][action]
+            self.Q[state][action] = self.alpha * reward + currentQ * (1 - self.alpha)         
+ 
     def update(self):
         """ The update function is called when a time step is completed in the 
             environment for a given trial. This function will build the agent
@@ -159,7 +167,7 @@ def run():
     ##############
     # Create the driving agent
     # Flags:
-    #   learning   - set to True to force the driving agent to use Q-learning
+    learning = True #   - set to True to force the driving agent to use Q-learning
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
     agent = env.create_agent(LearningAgent)
@@ -167,15 +175,15 @@ def run():
     ##############
     # Follow the driving agent
     # Flags:
-    #   enforce_deadline - set to True to enforce a deadline metric
-    env.set_primary_agent(agent)
+    enforce_deadline = True  # - set to True to enforce a deadline metric
+    env.set_primary_agent(agent, enforce_deadline)
 
     ##############
     # Create the simulation
     # Flags:
-    #   update_delay - continuous time (in seconds) between actions, default is 2.0 seconds
-    #   display      - set to False to disable the GUI if PyGame is enabled
-    #   log_metrics  - set to True to log trial and simulation results to /logs
+    update_delay = 0.01 # - continuous time (in seconds) between actions, default is 2.0 seconds
+    #display = False    #     - set to False to disable the GUI if PyGame is enabled
+    log_metrics = True   #- set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
     sim = Simulator(env)
     
@@ -183,7 +191,7 @@ def run():
     # Run the simulator
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05 
-    #   n_test     - discrete number of testing trials to perform, default is 0
+    n_test = 10 #  - discrete number of testing trials to perform, default is 0
     sim.run()
 
 
