@@ -218,7 +218,7 @@ class Environment(object):
                     print "Environment.step(): Primary agent ran out of time! Trial aborted."
 
         self.t += 1
-
+        print "Total trial is {}".format(self.t)
     def sense(self, agent):
         """ This function is called when information is requested about the sensor
             inputs from an 'agent' in the environment. """
