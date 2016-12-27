@@ -1481,7 +1481,8 @@ This smartcab should not be considered as a asfe or reliable driver for its pass
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>I think waypoint,light, left, and oncoming are most relevant for learning both safety and efficiency. the waypoint tells the smartcab what is the next action to perform and the light, left, and oncoming tell when the next appropriate action to perform. Violation any of these can cause a accident or violation. Smartcab should follows strictly to be a more efficient and safer 'driver'. The remaining feature deadline and right are important for efficiency or safety.</p>
+<p>I think waypoint,light, left, and oncoming are most relevant for learning both safety and efficiency. the waypoint tells the smartcab what is the next action to perform and the light, left, and oncoming tell when the next appropriate action to perform. Violation any of these can cause a accident or violation. Smartcab should follows strictly to be a more efficient and safer 'driver'.</p>
+<p>The remaining feature deadline and right are important for efficiency or safety. The deadline is used for evaluating the efficiency and is 5 times of distance (environment.py line 130: deadline = distance * 5). Furthermore, this is a continuous variable which could dramatically increase the state space. Right turn is usually allow even the light is 'red' and is relatively safe if there is no oncoming car from the left.</p>
 
 </div>
 </div>
@@ -2774,7 +2775,7 @@ yTIzMzMzMysjJ1lmZmZmZmZl5CTLzMzMzMysjJxkmZmZmZmZlZGTLDMzMzMzszJykmVmZmZmZlZG
 <li>There are 20 training trials the driving agent performed before testing. Yes, the number exactly match my expectation</li>
 <li>Yes</li>
 <li>It is clear that the bad actions was decreased as the number of training trials increased, the average reward was increased as the number of trials increased. </li>
-<li>The safety rating and reliability rating are similart between basic driving and default Q-learning agent.</li>
+<li>The safety rating and reliability rating are similar between basic driving and default Q-learning agent.</li>
 </ul>
 
 </div>
@@ -4806,7 +4807,7 @@ CwAAYEW/ARtsukUBskqZAAAAAElFTkSuQmCC
 <li>About 300 training trials was needed before begining testing</li>
 <li>epsilon-tolerance: 0.1, alpha: 0.005, to achieve higher number of trials, I have to set the alpha relatively small. In addition, I want to have a relatively large epsilon at the begining to force the agent have chance to randomly explore different actions.</li>
 <li>According to the plot, it is clear that the driving agent was successfully learned an appropriate policy</li>
-<li>From my opinion, it is not a safe and reliable driver although the driving did learned an appropriate policy. The safety and reliability rating are still too low.</li>
+<li>From my opinion, it is not a safe and reliable driver although the driving agent did learned an appropriate policy. The safety and reliability rating are still not stable. As you can see that the rate of reliability again reduced in trials &gt; 280.</li>
 </ul>
 
 </div>
@@ -4838,14 +4839,14 @@ CwAAYEW/ARtsukUBskqZAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>I have checked the file and found that most of the polivy is correct for that given state. But there are quiet a few which policy is different than what would be expected from an optimal policy</p>
+<p>I have checked the file and found that most of the policy is correct for that given state. But there are quiet a few policy which is different from what we would be expected from an optimal policy</p>
 <p>line 377:
 state: (('waypoint', 'forward'), ('light', 'red'), ('left', 'left'), ('oncoming', 'right'))
  -- forward : -0.09
  -- None : 0.00
  -- right : 0.01
  -- left : -0.20
-action with the highest value: right. The best action should be None because the waypoint is forward and the light is 'red'.</p>
+action with the highest value: right. The best action should be None because the waypoint is forward and the light is 'red'. The reason that the driving agent fail to learn the optimal policy is because that the driving agent did not have enough exploration as indicated by the zero score, a default score which has never been updated.</p>
 
 </div>
 </div>
@@ -4877,7 +4878,9 @@ action with the highest value: right. The best action should be None because the
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>The action and the state that invalidate the use of future rewards in the Q-Learning algorithm. For the environment perspect, we don't know what the next state of the smartcab is. And for the smartcab action perspect, we don't know what is the next action the smartcab will take.</p>
+<p>The action and the state that invalidate the use of future rewards in the Q-Learning algorithm.</p>
+<p>From the environment perspect, we don't know what the next state of the smartcab is. The smartcab's initial position, next waypoint and the destination change from trial to trial, and the environment itself changes stochastically, the smartcab cannot learn a route by route.</p>
+<p>From the smartcab action perspect, we don't know what is the next action the smartcab will take. The smartcab has an egocentric view of the world, meaning it doesn't "see" beyond the current intersection it's in. So it cannot "plan ahead" to try and find a route to the destination - it must rely on the instructions passed by the planner to get there.</p>
 
 </div>
 </div>

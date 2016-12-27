@@ -73,10 +73,7 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Calculate the maximum Q-value of all actions for a given state
-        maxQ = 0
-        for action in self.valid_actions:
-            if self.Q[state][action] > maxQ:
-                maxQ = self.Q[state][action]
+        maxQ = max(self.Q[state].values())
         return maxQ 
 
 
@@ -90,10 +87,7 @@ class LearningAgent(Agent):
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
         if self.learning and state not in self.Q:
-            self.Q[state] = {}
-            for action in self.valid_actions:
-                self.Q[state][action] = 0.0
-         
+            self.Q[state][action] = {action: 0.0 for action in self.valid_actions} # dict comprehension
 
     def choose_action(self, state):
         """ The choose_action function is called when the agent is asked to choose
@@ -113,17 +107,13 @@ class LearningAgent(Agent):
         if self.learning==False:                                   # J.H.
             action = random.choice(self.valid_actions)             # J.H.
         else:
-            actions = []        # J.H.
             if self.epsilon > random.random():                     # J.H.  
                 action = random.choice(self.valid_actions)         # J.H.
             else:
-                for action, value in self.Q[state].iteritems():
-                    if value == self.get_maxQ(state):
-                        actions.append(action)
-                action = random.choice(actions)                        # J.H.
-                print "action is={}".format(action)
-        return action       
+                best_actions = [action for action in self.valid_actions if self.Q[state][action] == self.get_maxQ(state)]
+                action = random.choice(best_actions)                       
 
+        return action       
 
     def learn(self, state, action, reward):
         """ The learn function is called after the agent completes an action and
